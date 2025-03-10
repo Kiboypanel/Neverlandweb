@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neverland Store</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e5e5e5;
+        }
+        header {
+            background-color: #1e2a33;
+            padding: 20px 30px;
+            color: white;
+            text-align: center;
+            border-bottom: 2px solid #4CAF50;
+        }
+        h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .container {
+            padding: 30px;
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-size: 22px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 16px;
+            color: #555;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .payment-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .payment-group select {
+            width: 48%;
+        }
+        .required {
+            color: red;
+            font-size: 14px;
+        }
+        .message {
+            text-align: center;
+            font-size: 18px;
+            color: #f44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Neverland Store</h1>
+    </header>
+
+    <div class="container">
+        <h2>Pilih Rank dan Masukkan Gamertag</h2>
+
+        <form id="rankForm">
+            <!-- Gamertag Input -->
+            <div class="form-group">
+                <label for="gamertag">Gamertag (Bedrock menggunakan titik ".") <span class="required">*</span></label>
+                <input type="text" id="gamertag" name="gamertag" required>
+            </div>
+
+            <!-- Platform Selection -->
+            <div class="form-group">
+                <label for="platform">Pilih Platform <span class="required">*</span></label>
+                <select id="platform" name="platform" required>
+                    <option value="">Pilih Platform</option>
+                    <option value="java">Java Edition</option>
+                    <option value="bedrock">Bedrock Edition</option>
+                </select>
+            </div>
+
+            <!-- Rank Selection -->
+            <div class="form-group">
+                <label for="rank">Pilih Rank <span class="required">*</span></label>
+                <select id="rank" name="rank" required>
+                    <option value="">Pilih Rank</option>
+                    <option value="VIP">🪙 VIP – Rp 5K</option>
+                    <option value="PRO">⚒️ PRO – Rp 15K</option>
+                    <option value="MVP">💎 MVP – Rp 20K</option>
+                    <option value="ELITE">🌟 ELITE – Rp 35K</option>
+                    <option value="IMMORTAL">💎 IMMORTAL – Rp 50K</option>
+                </select>
+            </div>
+
+            <!-- Payment Selection -->
+            <div class="form-group payment-group">
+                <label for="payment">Metode Pembayaran <span class="required">*</span></label>
+                <select id="payment" name="payment" required>
+                    <option value="">Pilih Pembayaran</option>
+                    <option value="qris">Qris</option>
+                    <option value="dana">Dana</option>
+                    <option value="gopay">Gopay</option>
+                </select>
+            </div>
+
+            <!-- Beli Button -->
+            <button type="button" onclick="prosesBeli()">Beli Rank</button>
+
+            <p id="error-message" class="message"></p>
+        </form>
+    </div>
+
+    <script>
+        function prosesBeli() {
+            var gamertag = document.getElementById("gamertag").value;
+            var platform = document.getElementById("platform").value;
+            var rank = document.getElementById("rank").value;
+            var payment = document.getElementById("payment").value;
+
+            if (gamertag && platform && rank && payment) {
+                var harga = "";
+                switch (rank) {
+                    case "VIP":
+                        harga = "5,000";
+                        break;
+                    case "PRO":
+                        harga = "15,000";
+                        break;
+                    case "MVP":
+                        harga = "20,000";
+                        break;
+                    case "ELITE":
+                        harga = "35,000";
+                        break;
+                    case "IMMORTAL":
+                        harga = "50,000";
+                        break;
+                }
+
+                // Format pesan sesuai permintaan
+                var pesan = `Hallo Min, Ini Format Beli Saya :\n\n📨 Gamertag : ${gamertag}\n🛒 Rank : ${rank}\n💸 Harga : IDR ${harga}\n🎮 Platform : ${platform}\n\nMohon Untuk Di Proses Yak Min, Di Tunggu 🙏`;
+
+                // Format WhatsApp URL
+                var waURL = `https://wa.me/6283160659941?text=${encodeURIComponent(pesan)}`;
+                
+                // Pesan sukses
+                document.getElementById("error-message").textContent = "Tunggu sebentar, Anda akan diarahkan ke WhatsApp untuk menyelesaikan pembayaran.";
+                setTimeout(function() {
+                    window.open(waURL, "_blank");
+                }, 2000); // Menunggu 2 detik sebelum membuka WhatsApp
+            } else {
+                document.getElementById("error-message").textContent = "Harap isi semua kolom dengan benar!";
+            }
+        }
+    </script>
+
+</body>
+</html>
